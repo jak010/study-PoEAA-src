@@ -4,12 +4,12 @@ services:
     image: mysql:5.7-debian
     platform: linux/amd64 # mac에서 docker를 사용할 경우 이 옵션은 반드시 활성화 되어야 합니다.
     ports:
-      - "3306:3306"
+      - "9902:3306"
     expose:
-      - "3306"
+      - "9902"
     environment:
-      MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: pofeaa
+      MYSQL_ROOT_PASSWORD: 1234
     command:
       - --character-set-server=utf8
-      - --collation-server=utf8_general_ci%
+      - --collation-server=utf8_general_ci
