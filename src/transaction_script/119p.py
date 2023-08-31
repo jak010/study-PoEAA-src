@@ -66,7 +66,7 @@ class GateWay:
     def __init__(self):
         self._find_recognitions_statement: Final = "SELECT amount" \
                                                    " FROM revenueRecognitions" \
-                                                   " WHERE contract =%(contract)s AND DATE(recognizedOn) <= %(recognizedOn)s;"
+                                                   " WHERE contract=%(contract)s AND DATE(recognizedOn) <= %(recognizedOn)s;"
         self._find_contract_statement: Final = "SELECT" \
                                                " c.id as contract_id," \
                                                " c.product as contract_product," \
@@ -78,7 +78,7 @@ class GateWay:
                                                " FROM contracts c, products p" \
                                                " WHERE c.id=%(contract_id)s AND c.product = p.id;"
         self._insert_recognition_statement: Final = "INSERT INTO revenueRecognitions" \
-                                                    " VALUES ( %(contract)s, %(amount)s, %(recognizedOn)s);"
+                                                    " VALUES(%(contract)s, %(amount)s, %(recognizedOn)s);"
 
     def find_recognitions_for(self, contract_id, asof: datetime):
         self._db.execute(self._find_recognitions_statement, params={
@@ -96,16 +96,14 @@ class GateWay:
         return self._db.fetchone()
 
     def insert_recognition(self, contract_id, amount, asof):
-        print(self._insert_recognition_statement % {
-            "contract": contract_id,
-            "amount": amount,
-            "recognizedOn": asof,
-        })
         self._db.execute(self._insert_recognition_statement, params={
             "contract": contract_id,
             "amount": amount,
             "recognizedOn": asof,
         })
+
+    def close(self):
+        self._db.close()
 
 
 class RecognitionService:
@@ -164,12 +162,10 @@ class RecognitionService:
                                            amount=allocations[2],
                                            asof=recognition_date.add_days(60)
                                            )
-        except Exception as e:  # TODO `23.09.01 개선하자.
-            self.db._db.rollback()
+        except Exception as e:
             raise e
         finally:
-            self.db._db.commit()
-            self.db._db.close()
+            self.db.close()
 
 
 if __name__ == '__main__':
