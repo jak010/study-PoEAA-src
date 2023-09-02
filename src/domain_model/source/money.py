@@ -1,7 +1,9 @@
 from __future__ import annotations
-from currency_converter import CurrencyConverter
+
 import decimal
 from typing import List
+
+from currency_converter import CurrencyConverter
 
 
 class Money:
@@ -22,14 +24,28 @@ class Money:
         return cls._instance
 
     @classmethod
-    def allocate(cls, number: float) -> List[decimal.Decimal]:
-        return [
+    def allocate(cls, number: float) -> List[Money]:
+        objs = []
+
+        amounts = [
             decimal.Decimal(cls._instance.get_amount() / number).quantize(cls._ROUND_DECIAML)
             for _ in range(3)
         ]
+        for amount in amounts:
+            _klass = cls()
+            _klass._amount = amount
+            objs.append(_klass)
+
+        return objs
 
     def get_amount(self):
         return self._amount
 
     def __repr__(self):
         return f"Money(amount={self._amount})"
+
+    def __add__(self, other):
+        if isinstance(other, Money):
+            self._amount += float(other.get_amount())
+            return self
+        raise TypeError("Not Equals...")

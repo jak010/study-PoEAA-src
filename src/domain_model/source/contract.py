@@ -1,11 +1,14 @@
 from __future__ import annotations
 
-from typing import List
+from typing import List, TYPE_CHECKING
 
-from .mfdate import MfDate
-from .money import Money
-from .product import Product
-from .revenue_recognition import RevenueRecognition
+from src.domain_model.source.money import Money
+
+if TYPE_CHECKING:
+    from src.domain_model.source.mfdate import MfDate
+
+    from src.domain_model.source.revenue_recognition import RevenueRecognition
+    from src.domain_model.source.product import Product
 
 
 class Contract:
@@ -18,9 +21,9 @@ class Contract:
         self._money = revenue
         self._when_signed = when_signed
 
-    def recognized_revenue(self, asof) -> Money:
+    def recognized_revenue(self, asof: MfDate) -> Money:
         result = Money.dollors(krw=0)
-
+        print(f"[Logging] revenue_recognitions: \n{self._revenue_recognitions}")
         for revenue_recognition in self._revenue_recognitions:
             if revenue_recognition.is_recognizable_by(asof):
                 result += revenue_recognition.get_amount()
