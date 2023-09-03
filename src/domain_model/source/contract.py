@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 from typing import List, TYPE_CHECKING
 
 from src.domain_model.source.money import Money
@@ -23,7 +24,7 @@ class Contract:
 
     def recognized_revenue(self, asof: MfDate) -> Money:
         result = Money.dollors(krw=0)
-        print(f"[Logging] revenue_recognitions: \n{self._revenue_recognitions}")
+        print("Logging:", self._revenue_recognitions)
         for revenue_recognition in self._revenue_recognitions:
             if revenue_recognition.is_recognizable_by(asof):
                 result += revenue_recognition.get_amount()
@@ -31,7 +32,9 @@ class Contract:
         return result
 
     def add_revenue_recognition(self, revenue_recognition: RevenueRecognition):
-        self._revenue_recognitions.append(revenue_recognition)
+        # Memo: Object Copy Issue in..(resolved)
+        #  - (Shallow Copy Issue) self._revenue_recognitions.append(revenue_recognition)
+        self._revenue_recognitions.append(copy.deepcopy(revenue_recognition))
 
     def get_revenue(self):
         return self._money

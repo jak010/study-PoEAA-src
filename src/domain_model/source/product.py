@@ -67,3 +67,9 @@ class Product:
 
     def calculate_revenue_recognition(self, contract: Contract):
         self._recognition_strategey.calculate_revenue_recognitions(contract)
+
+    def __repr__(self):
+        return f"Product(" \
+               f" name={self._name}" \
+               f" strategy={self._recognition_strategey}" \
+               f")"

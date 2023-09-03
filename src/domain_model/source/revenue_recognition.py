@@ -20,7 +20,7 @@ class RevenueRecognition:
         return asof.after(self.date) or asof.equals(self.date)
 
     def __repr__(self):
-        return f"\nRevenueRecognition(" \
+        return f"RevenueRecognition(" \
                f"amount={self.amount}, " \
                f"date={self.date}" \
                f")\n"
