@@ -3,6 +3,7 @@ from src.table_module.dataset import DataSet
 import decimal
 import uuid
 from src.table_module.datatable import DataTable
+from src.table_module.get_when_signed import GetWhenSigned
 
 
 class RevenueRecognition:
@@ -11,7 +12,7 @@ class RevenueRecognition:
         self.ds = ds.get_tables()["RevenueRecognition"]
         self._ds = ds
 
-    def insert(self, contract_id: int, amount: decimal.Decimal, datetime: int):
+    def insert(self, contract_id: int, amount: decimal.Decimal, datetime: GetWhenSigned):
         rr_table = DataTable("RevenueRecognition")
         rr_table.add_column("id", uuid)
         rr_table.add_column("contract_id", int)

@@ -20,17 +20,14 @@ if __name__ == '__main__':
     contract_table.add_column("amount", decimal)
     contract_table.add_column("dataSigned", int)
 
-    contract_table.add_row(id=1, product=1, amount=9999, dataSigned=1)
-    contract_table.add_row(id=2, product=2, amount=9999, dataSigned=3)
-    contract_table.add_row(id=3, product=3, amount=9999, dataSigned=4)
+    contract_table.add_row(id=1, product=1, amount=9999, dataSigned="2023-09-05")
+    contract_table.add_row(id=2, product=2, amount=9999, dataSigned="2023-09-06")
+    contract_table.add_row(id=3, product=3, amount=9999, dataSigned="2023-09-07")
 
     data_set = DataSet()
     data_set.add(product_table)
     data_set.add(contract_table)
 
-    # from pprint import pprint
-    # pprint(data_set.get_tables())
-
     # calculate recognized Revenues
     contract = Contract(data_set)
-    contract.calculate_recognitions(contract_id=1)
+    contract.calculate_recognitions(contract_id=2)
